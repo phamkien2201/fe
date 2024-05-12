@@ -1,0 +1,207 @@
+.main-product{
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.container-product {
+    max-width:  1400px;
+    width: 100%;
+    padding: 20px;
+    padding-top: 60px;
+    padding-bottom: 15px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    align-items: flex-start;
+    
+    flex-direction: row;
+    display: flex;
+}
+  
+  .product-images {
+    width: 40%;
+    padding-right: 20px;
+    padding-top: 20px;
+  }
+
+  .product-images img {
+    width: 500px; /* Chiều rộng cố định */
+    height: 500px; /* Chiều cao tự động điều chỉnh để giữ tỉ lệ */
+    object-fit: contain; /* Đảm bảo hình ảnh vừa vặn mà không cắt bớt */
+  }
+  
+  
+  .product-info {
+    font-size: 16px;
+    width: 60%;
+  }
+  
+  .container-product {
+    display: flex;
+    justify-content: space-between;
+  
+    .product-images {
+      width: 40%;
+    }
+  
+    .product-info {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      padding-left: 20px;
+  
+      h1 {
+        font-size: 30px; // Bạn có thể điều chỉnh kích thước phù hợp
+      }
+
+      h2 {
+        margin: 10px 0;
+        color: #007bff;
+      }
+  
+      h3 {
+        font-size: 24px;
+        margin: 10px;
+        font-weight: normal;
+        vertical-align: inherit;
+        unicode-bidi: isolate; // Điều chỉnh kích thước font chữ
+      }
+  
+      // Kích thước font cho giá sản phẩm giống như tên sản phẩm
+      .product-price {
+        font-size: 24px;
+      }
+  
+      .product-quantity {
+        display: flex;
+        align-items: normal;
+        margin: 10px 0;
+  
+        label {
+          margin-right: 10px;
+        }
+  
+        input[type="number"] {
+          width: 100px;
+          height: 30px;
+          font-size: 24px;
+          //padding: 5px;
+          text-align: center;
+          //margin: 0 10px;
+          border: 1px solid #ccc;
+        }
+        
+        .quantity-btn {
+          
+          height: 32px;
+          
+          background: none;
+          border: 1px solid #ccc;
+          //padding: 5px 10px;
+          //border-radius: 20px;
+          cursor: pointer;
+          svg{
+            font-size: 20px;
+          }
+        }
+        button {
+          padding: 0 10px;
+          cursor: pointer;
+        }
+      }
+      
+    }
+  }
+  
+  
+  
+  .add-to-cart-btn {
+    width: 334px;
+    height: 56px;
+    border-radius: 30px;
+    background-color: #007bff;
+    color: white;
+    font-size: 26px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  // Bổ sung button đơn vị tính
+  .unit-btn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
+  .product-description{
+    max-width:  1400px;
+    width: 100%;
+    padding: 20px;
+    
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    display: flex;
+    flex-direction: column;
+
+    h4, p, ul {
+      font-size: 24px;
+      flex: 1 1 100%; // Mỗi mục chiếm 100% chiều rộng của hàng nếu không có đủ khoảng trống
+      margin: 10px 0; // Thêm một chút margin cho mỗi mục
+    }
+  
+    // Định nghĩa cho các tiêu đề và nội dung nằm cùng hàng
+    .description-item {
+      display: flex;
+      flex-direction: column; // Stack nội dung theo chiều dọc
+      flex: 1 1 45%; // Cho phép mỗi mục chiếm khoảng 45% chiều rộng của hàng
+      margin: 10px; // Thêm margin cho mỗi mục
+    }
+}
+
+
+.slick-arrow {
+  z-index: 1000; // Đảm bảo các mũi tên nằm trên tất cả các lớp khác
+  position: absolute; // Đặt vị trí tuyệt đối cho mũi tên so với khối chứa của Slider
+  top: 50%; // Đặt mũi tên ở giữa theo chiều dọc
+  transform: translateY(-50%); // Trung tâm mũi tên theo chiều dọc
+  cursor: pointer; // Cho biết mũi tên có thể nhấp
+  width: 30px; // Chiều rộng của mũi tên
+  height: 30px; // Chiều cao của mũi tên
+  //background-color: #ffffff; // Màu nền của mũi tên
+  //border-radius: 50%; // Làm tròn góc
+  align-items: center;
+  &:hover {
+    background-color: #aaa; // Thay đổi màu khi hover
+  }
+}
+
+.slick-prev {
+  left: 10px; // Đặt mũi tên trái cách lề trái 10px
+}
+
+.slick-next {
+  right: 10px; // Đặt mũi tên phải cách lề phải 10px
+}
+
+.expand-toggle{
+  font-size: 26px;
+
+  svg{
+    vertical-align:top;
+  }
+
+  :hover{
+    color: #007bff;
+  }
+}

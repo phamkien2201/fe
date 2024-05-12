@@ -1,0 +1,118 @@
+
+.hero_search_form {
+    position: relative;
+    
+    
+}
+
+
+/* Cài đặt kiểu cho trường nhập liệu và kết quả tìm kiếm */
+input[type='text'] {
+    color: black;      /* Màu chữ đen cho trường nhập liệu */
+    font-size: 20px;   /* Đặt kích thước font chữ */
+    width: 100%;       /* Đảm bảo trường nhập liệu chiếm toàn bộ chiều rộng */
+}
+
+.search-results {
+    position: absolute;
+    z-index: 10000;
+    background: white;
+    width: 650px; // Có hai lần khai báo width, chỉ giữ một
+    //max-height: 525px; // Đặt một chiều cao tối đa hợp lý
+    overflow-y: auto; // Cho phép cuộn khi nội dung vượt quá chiều cao tối đa
+    top: 100%; // Đặt phía dưới form nhập
+    left: 0;
+    color: black;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Tạo bóng cho bảng kết quả để nổi bật hơn
+    border-radius: 5px; // Tạo viền bo tròn cho bảng kết quả
+}
+
+
+.search-results div {
+    margin-bottom: 5px;  /* Khoảng cách giữa các kết quả */
+    font-size: 20px;    /* Kích thước font chữ cho từng kết quả */
+}
+
+/* Nếu bạn muốn có padding cho từng kết quả */
+.search-results div {
+    padding: 10px;      /* Thêm padding cho mỗi kết quả */
+}
+.result-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    //width: 100%;
+    //padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s ease-in-out;
+
+    &:hover {
+        //border: 2px solid #306de4;
+        background-color: #ccc;
+    }
+}
+
+.result-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 5px;
+    margin-right: 20px; /* Thêm khoảng cách giữa ảnh và thông tin sản phẩm */
+}
+
+.result-item .result-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.result-item .result-name {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px; /* Đặt kích thước font chữ cho tên sản phẩm */
+}
+
+.result-item .price {
+    font-size: 14px; /* Đặt kích thước font chữ nhỏ hơn cho giá */
+    color: #000000; /* Màu chữ cho giá */
+}
+.more-results{
+    text-align: center;
+    font-size: 20px;
+    text-decoration: none;
+    :hover{
+        font-weight: bolder;
+    }
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  
+    &:hover {
+      background-color: #007bff;
+    }
+  
+    &:disabled {
+      background-color: #007bff;
+      cursor: default;
+    }
+  }
+  

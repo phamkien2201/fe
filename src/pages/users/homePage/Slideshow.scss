@@ -1,0 +1,49 @@
+.slideshow {
+  position: relative;
+  overflow: hidden;
+  height: 400px;  
+  width: 1400px;
+  align-items: normal; /* Thiết lập cao tùy ý để phù hợp với thiết kế của bạn */
+}
+
+.slideshow img {
+  width: 60%;  /* Điều chỉnh chiều rộng của hình ảnh để phù hợp với container */
+  border-radius: 15px;
+ height: 100%;  /* Điều chỉnh chiều cao tự động để giữ nguyên tỉ lệ */
+  display: block;
+  /* Loại bỏ khoảng trống dưới hình ảnh */
+}
+
+.slideshowSlider {
+  white-space: nowrap;
+  transition: ease 1000ms;
+}
+
+.slide {
+  display:flex;
+  height: 100%;
+  width: 100%;
+  background-size: contain;  /* Thay đổi ở đây để hình ảnh hiển thị đầy đủ mà không bị cắt */
+  background-position: center;
+  background-repeat: no-repeat;  /* Thêm này để tránh lặp lại hình ảnh nếu hình ảnh nhỏ hơn khung */
+}
+
+.slideshowDots {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.slideshowDot {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 0 5px;
+  cursor: pointer;
+  &.active {
+      background-color: #000;
+  }
+}

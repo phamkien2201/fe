@@ -1,0 +1,49 @@
+.main-category-name {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .submenus-1 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    margin: 10px;
+  }
+  
+  .submenu-item-1 {
+    width: 395px; /* Cập nhật chiều rộng */
+    height: 165px; 
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid transparent; /* Đặt màu viền ban đầu là trong suốt */
+    transition: border 0.3s ease-in-out; 
+    position: relative;
+
+    a {
+        text-decoration: none;
+        color: #306de4;
+        font-size: 22px;
+        position: relative;
+        display: inline-block; /* Để pseudo-element có thể hoạt động chính xác */
+    }
+
+    a::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -3px; /* Điều chỉnh vị trí theo yêu cầu */
+        width: 0;
+        height: 2px; /* Độ dày của gạch chân */
+        background-color: #306de4; /* Màu của gạch chân */
+        transition: width 0.2s ease-in-out;
+    }
+
+    a:hover::after {
+        width: 100%;
+    }
+}

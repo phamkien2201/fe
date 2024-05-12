@@ -1,0 +1,430 @@
+.header_top{
+    background: #306de4;
+    
+}
+
+.row-header-top{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #306de4;
+}
+.header_top_left {
+    ul{
+    
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 10px 0 13px;
+    column-gap: 15px;
+
+    li {
+        font-size: 16px;
+        color: white;
+        display: flex;
+        align-items: center;
+        column-gap: 2px;
+    }
+    }
+}
+
+.header_top_right{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 0 13px;
+    ul{
+        display: flex;
+        column-gap: 15px;
+        list-style: none;
+        margin-right: 10px;
+        padding: 10px 0;
+        
+        svg {
+            font-size: 20px;
+            color: white;
+            vertical-align: middle;
+        }
+
+        a{
+            font-size: 16px;
+            display: inline-block;
+            color:white;
+            text-decoration: none;
+            vertical-align: middle;
+        }
+
+        li:last-child {
+            cursor: pointer;
+            margin-left: 10px;
+
+            span {
+                font-size: 18px;
+                margin-left: 2px;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+.header_user{
+    background: #306de4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0;
+
+    ul {
+        display: flex;
+        margin-right: 25px;
+
+        li {
+            list-style: none;
+            position: relative;
+            margin-left: 20px;
+            
+            svg {
+                font-size: 30px;
+                color: white;
+                vertical-align: middle;
+            }
+
+            span {
+                color: white;
+                position:relative;
+                height: 20px;
+                width: 20px;
+                text-align: center;
+                line-height: 20px;
+                font-size: 20px;
+                font-weight: 500;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+.header_logo{
+    padding: 15px 0;
+    margin-left: 100px;
+   
+    
+    a {
+        text-decoration: none;
+        color: #ffffff;
+        align-items: center;
+    }
+}
+
+.hero_search_container{
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0;
+    
+
+    .hero_search_form {
+        width: 810px;
+        height: 50px;
+        float: left;
+        padding-left: 24px 0;
+
+        form{
+            display: flex;
+            align-items: center;
+        }
+
+        input {
+            border: none;
+            height: 48px;
+            font-size: 20px;
+            color: #000000;
+            padding-left: 20px;
+            border: 1px solid #ebebeb;
+            width: 80%;
+            border-radius: 25px;
+            :focus {
+                outline: none;
+                border: none;
+            }
+        }
+    
+        button{
+            font-size: 30px;
+            padding: 10px;
+            background: #306de4;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 50%;
+            border: #306de4;
+            float: left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            svg {
+                font-size: 25px;
+            }
+        }
+    }
+}        
+    
+.container-header{
+    
+    margin: auto;
+    color: #306de4;
+
+    .row-header{
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #306de4;
+    }
+}
+
+.header_cart{
+    background: #306de4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0;
+    
+
+    ul {
+        display: flex;
+        margin-right: 25px;
+
+        li {
+            list-style: none;
+            position: relative;
+            margin-left: 20px;
+            color: white;
+            
+            
+            svg {
+                font-size: 30px;
+                color: white;
+                vertical-align: middle;
+            }
+
+            span {
+                color: white;
+                background: #dc0000;
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 20px;
+                font-size: 13px;
+                font-weight: 500;
+                left: 35px;
+                top: -4px;
+            }
+        }
+
+        li:last-child {
+            font-size: 19px;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+
+    }
+
+    
+}
+
+.login-link {
+    color: white;           // Text color
+    text-decoration: none;  // No underline
+    font-size: 19px;
+    font-weight: 500;        // Font size
+    display: flex;          // For aligning icon and text
+    align-items: center;    // Align vertically
+    margin-left: 20px;
+    
+    svg {
+        font-size: 30px;
+        color: white;
+        vertical-align: middle;
+        padding-right: 7px;
+    }
+    
+}
+
+.logout{
+    background-color: #ffff;
+    color: #306de4;
+    width: 100px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-top: 3px;
+}
+
+.underline-text {
+    position: relative;
+    cursor: pointer;
+    color: white;         
+    text-decoration: none;  
+    font-size: 19px;
+    font-weight: 500;        
+    display: flex;          
+    align-items: center;    // Align vertically
+  }
+  
+  .underline-text::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px; 
+    background-color: rgb(255, 255, 255); 
+    transition: width 0.3s ease;
+  }
+  
+  .login-link:hover .underline-text::after {
+    width: 100%;
+  }
+  
+
+.header_cart_price {
+    color: white;
+    svg {
+        font-size: 20px;
+        color: white;
+        vertical-align: middle;
+    }
+    span {
+        color: white;
+        position:relative;
+        height: 20px;
+        width: 20px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 20px;
+        font-weight: 500;
+        vertical-align: middle;
+    }
+}
+
+.menu {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: #ffffff;
+    position: relative;
+    z-index: 1000; /* Ensure the menu is on top */
+}
+
+.menu li {
+    position: relative;
+    font-size: 21px;
+    font-weight:600; /* Updated font size */
+}
+
+.menu li a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s; /* Transition for color */
+}
+
+.menu li::after{
+    content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px; /* Điều chỉnh vị trí theo nhu cầu */
+  width: 0;
+  height: 2px; /* Độ dày của gạch chân */
+  background-color: blue; /* Màu của gạch chân */
+  transition: width 0.3s ease;
+}
+
+.menu li:hover::after  {
+    width: 100%; /* Color changes to blue on hover */
+}
+
+.menu li:hover > a{
+    color: blue;
+    font-weight: bold;
+}
+
+/* Rotate icons using CSS transitions */
+.menu li a svg {
+    margin-left: 5px; /* Add 5px margin to the left of the icon */
+    vertical-align: middle; 
+    transition: transform 0.5s; /* Smooth transition for rotation */
+}
+
+.menu .sub-menu li a svg {
+    margin-left: 5px; /* Also ensure sub-menu icons have the same left margin */
+    vertical-align: middle;
+    transition: transform 0.5s;
+}
+
+.menu li:hover > a svg {
+    transform: rotate(-180deg);
+    color: #306de4; /* Rotate icon when hovering over menu-item */
+}
+
+/* Sub-menu specific styles for the icon rotation */
+.menu .sub-menu li:hover > a svg {
+    transform: rotate(-90deg);
+    color: #306de4; /* Rotate icon when hovering over sub-menu item */
+}
+
+/* Style for sub-menu and sub-sub-menu */
+.menu .sub-menu,
+.menu .sub-sub-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    border: solid 1px #ddd;
+    z-index: 1001; /* Ensure sub-menus are also on top */
+}
+
+.menu .sub-menu {
+    top: 100%; /* Positioned right below the parent menu item */
+    left: -3px;
+   
+}
+
+.menu .sub-sub-menu {
+    left: 100%; /* Positioned right to the right of sub-menu */
+    top: 0;
+   
+    padding: 10px;
+}
+
+.menu li:hover > .sub-menu,
+.menu li:hover > .sub-sub-menu {
+    display: block;
+}
+
+.menu .sub-menu li,
+.menu .sub-sub-menu li {
+    min-width: 150px;
+    white-space: nowrap;
+}
+
+.menu .sub-menu li a,
+.menu .sub-sub-menu li a {
+    padding: 8px 12px;
+    display: block;
+}
+
+.menu .sub-menu li:hover > a,
+.menu .sub-sub-menu li:hover > a {
+    background-color: #e9e9e9;
+    font-weight: bold; /* Text becomes bold on hover */
+}
+
+.section-title{
+        
+    padding-top: 30px;
+} 

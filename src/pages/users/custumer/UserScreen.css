@@ -1,0 +1,87 @@
+.title-profiles {
+  width: 100%;
+  justify-content: start;
+  align-items: start;
+  align-self: start;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 20px;
+}
+
+.user-screen {
+  width: 911px;
+  height: auto;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+}
+
+.avatar-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.user-info {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+.label {
+  margin-right: 20px;
+  font-size: 18px;
+  color: #4a4f63;
+}
+
+.value {
+  font-weight: 600;
+  margin-right: 20px;
+  font-size: 18px;
+}
+
+.value input {
+  padding: 10px;
+  width: 300px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.update-buttons {
+  margin: 20px;
+}
+
+.updated-button {
+  padding: 15px 30px;
+  background-color: #eaeffa;
+  color: blue;
+  margin-right: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  border: none;
+}
+
+.save-button {
+  padding: 15px 30px;
+  background-color: blue;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  border: none;
+}
