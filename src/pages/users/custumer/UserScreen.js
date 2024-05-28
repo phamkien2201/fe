@@ -21,6 +21,7 @@ const UserScreen = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+
   const fetchUserData = async () => {
     try {
       const token = sessionStorage.getItem("accessToken");
@@ -39,6 +40,7 @@ const UserScreen = () => {
       );
 
       const userDataFromApi = response.data.data;
+      sessionStorage.setItem("customerId", userDataFromApi.id); // Lưu customerId vào sessionStorage
       setUserData({
         firstName: userDataFromApi.firstName, // Thay đổi tại đây
         lastName: userDataFromApi.lastName, // Và tại đây
@@ -57,7 +59,7 @@ const UserScreen = () => {
       const customerId = await getCustomerID();
       const response = await axios.put(
         `http://localhost:5002/api/customer/info/${customerId}`,
-        userData, // Sử dụng dữ liệu từ state userData
+        userData,
         {
           headers: {
             Accept: "*/*",
@@ -73,6 +75,7 @@ const UserScreen = () => {
       throw error;
     }
   };
+
   const handleSaveChanges = async () => {
     try {
       console.log("Saving changes...", userData);

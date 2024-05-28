@@ -64,7 +64,7 @@ const CartContainer = () => {
               </>
             ) : (
               <div className="no-item">
-                <p> No item in the cart</p>
+                <h2> No item in the cart</h2>
               </div>
             )}
             <Summary cartItems={cartItems} />

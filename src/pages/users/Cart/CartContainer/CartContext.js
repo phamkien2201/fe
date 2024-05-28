@@ -1,36 +1,37 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useFetchProduct } from "./useFetchProduct";
+import { useFetchCustomerProducts } from "./useFetchCustomerProducts";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const { product, error } = useFetchProduct();
+  const { products: initialProducts, error } = useFetchCustomerProducts();
+  const [products, setProducts] = useState(initialProducts || []);
   const [cartItems, setCartItems] = useState(
     JSON.parse(localStorage.getItem("cartItems")) || []
   );
 
   useEffect(() => {
-    if (product) {
-      console.log(product); // Hoặc xử lý product tại đây
+    if (initialProducts) {
+      setProducts(initialProducts);
     }
     if (error) {
-      console.error("Failed to fetch product:", error);
+      console.error("Failed to fetch customer products:", error);
     }
-  }, [product, error]);
+  }, [initialProducts, error]);
 
   const addToCart = (product) => {
     const existingItemIndex = cartItems.findIndex(
       (item) => item.id === product.id
     );
-    product.quantity = product.quantity || 1;
 
     if (existingItemIndex !== -1) {
       const updatedItems = [...cartItems];
       updatedItems[existingItemIndex].quantity += 1;
       setCartItems(updatedItems);
     } else {
+      product.quantity = product.quantity || 1;
       setCartItems([...cartItems, product]);
     }
     toast.success("Thêm sản phẩm vào giỏ hàng thành công!");
@@ -56,13 +57,45 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const checkout = async (customerId) => {
+    try {
+      const token = sessionStorage.getItem("accessToken");
+      if (!token) {
+        throw new Error("Access token not found");
+      }
+
+      // Thực hiện yêu cầu GET để kiểm tra đơn hàng
+      const response = await fetch(
+        `http://localhost:5003/api/order/don-hang-cua-toi/${customerId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data.succeeded && data.data && data.data.length > 0) {
+        setCartItems([]);
+        toast.success("Đặt hàng thành công");
+      } else {
+        throw new Error("No orders found");
+      }
+    } catch (error) {
+      toast.error("Đặt hàng thất bại");
+      console.error("Error fetching orders:", error);
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, removeQuantity }}
+      value={{ cartItems, addToCart, removeFromCart, removeQuantity, checkout }}
     >
       {children}
     </CartContext.Provider>

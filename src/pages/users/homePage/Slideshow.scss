@@ -1,13 +1,13 @@
 .slideshow {
   position: relative;
   overflow: hidden;
-  height: 400px;  
+  height: 600px;  
   width: 1400px;
   align-items: normal; /* Thiết lập cao tùy ý để phù hợp với thiết kế của bạn */
 }
 
 .slideshow img {
-  width: 60%;  /* Điều chỉnh chiều rộng của hình ảnh để phù hợp với container */
+  width: 100%;  /* Điều chỉnh chiều rộng của hình ảnh để phù hợp với container */
   border-radius: 15px;
  height: 100%;  /* Điều chỉnh chiều cao tự động để giữ nguyên tỉ lệ */
   display: block;

@@ -13,7 +13,8 @@ const CartScreen = () => {
 
   const fetchProducts = async (status) => {
     try {
-      let apiUrl = "http://localhost:5003/api/order/don-hang-cua-toi/";
+      const customerId = sessionStorage.getItem("customerId"); // Lấy customerId từ sessionStorage
+      let apiUrl = `http://localhost:5003/api/order/don-hang-cua-toi/${customerId}`; // Sử dụng customerId trong URL
       if (status !== "all") {
         apiUrl += `?status=${status}`;
       }
