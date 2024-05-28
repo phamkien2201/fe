@@ -1,0 +1,45 @@
+.order-details-container {
+    padding: 20px;
+  }
+  
+  .product-details {
+    max-width: 400px;
+    margin-bottom: 20px;
+  
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+  
+    p {
+      margin-bottom: 10px;
+    }
+  }
+  
+  .order-info {
+    max-width: 400px;
+    margin-bottom: 20px;
+  
+    p {
+      margin-bottom: 5px;
+    }
+  }
+  
+  .order-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .order-details h2 {
+    margin-bottom: 20px;
+  }
+  

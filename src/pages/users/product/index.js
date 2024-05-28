@@ -114,21 +114,15 @@ function ProductDetails() {
   }
 
   if (!product) return <div>Loading...</div>;
-
-  // các phần khác của code giống như trước
-  // State để kiểm soát hiển thị mở rộng
-
-  // Hàm để toggle trạng thái mở rộng
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // Style cho phần mô tả sản phẩm
   const descriptionStyle = {
-    maxHeight: isExpanded ? "none" : "500px", // Giới hạn chiều cao khi chưa mở rộng
-    overflow: "hidden", // Ẩn nội dung thừa
-    textOverflow: "ellipsis", // Thêm ba chấm nếu nội dung bị cắt ngắn
-    whiteSpace: isExpanded ? "normal" : "nowrap", // Đảm bảo không xuống dòng khi chưa mở rộng
+    maxHeight: isExpanded ? "none" : "500px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: isExpanded ? "normal" : "nowrap",
     transition: "max-height 0.3s ease-in-out",
   };
 

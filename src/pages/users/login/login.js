@@ -10,24 +10,24 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   useAPIInterceptor();
+
   useEffect(() => {
     const loggedInUser = sessionStorage.getItem("email");
     if (loggedInUser) {
-      setEmail(loggedInUser); // Sử dụng email từ sessionStorage để hiển thị địa chỉ email người đăng nhập
+      setEmail(loggedInUser);
     }
   }, []);
 
   const validate = () => {
     let result = true;
-    // Biểu thức chính quy để kiểm tra tính hợp lệ của email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (email === "" || email === null) {
       result = false;
       toast.warning("Nhập Email");
-    } else if (!emailRegex.test(email)) {
-      result = false;
-      toast.warning("Email không hợp lệ");
+      // } else if (email !== "admin" && !emailRegex.test(email)) {
+      //   result = false;
+      //   toast.warning("Email không hợp lệ");
     }
 
     if (password === "" || password === null) {
@@ -52,18 +52,21 @@ const Login = () => {
           if (resp.succeeded === false) {
             toast.error("Đăng nhập thất bại, thông tin không hợp lệ");
           } else {
-            // Log access token và refresh token vào console
             console.log("Access Token:", resp.data.accessToken);
             console.log("Refresh Token:", resp.data.refreshToken);
 
             toast.success("Đăng nhập thành công");
-            sessionStorage.setItem("email", email); // Lưu email vào sessionStorage
+            sessionStorage.setItem("email", email);
             sessionStorage.setItem("accessToken", resp.data.accessToken);
             sessionStorage.setItem("refreshToken", resp.data.refreshToken);
-            navigate("/cart"); // Chuyển hướng đến trang giỏ hàng
+
+            if (email === "admin") {
+              navigate("/admin");
+            } else {
+              navigate("/cart");
+            }
           }
         })
-
         .catch((err) => {
           toast.error("Đăng nhập thất bại do: " + err.message);
         });
