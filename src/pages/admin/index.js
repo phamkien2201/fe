@@ -8,6 +8,7 @@ import { formatter } from "../../utils/formater";
 
 const Admin = () => {
   const [orders, setOrders] = useState([]);
+  const [customerEmails, setCustomerEmails] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,12 +36,49 @@ const Admin = () => {
 
         if (data.succeeded) {
           setOrders(data.data);
+          fetchCustomerEmails(data.data);
         } else {
           toast.error("Failed to fetch orders");
         }
       } catch (error) {
         toast.error("Error: " + error.message);
       }
+    };
+
+    const fetchCustomerEmails = async (orders) => {
+      const emails = {};
+      const accessToken = sessionStorage.getItem("accessToken");
+
+      for (const order of orders) {
+        if (!order.customerId) continue;
+
+        try {
+          const response = await fetch(
+            `http://localhost:5002/api/customer/customerId?customerId=${order.customerId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          if (data.succeeded) {
+            emails[order.customerId] = data.data.email;
+          } else {
+            toast.error(
+              `Failed to fetch email for customer ID: ${order.customerId}`
+            );
+          }
+        } catch (error) {
+          toast.error("Error: " + error.message);
+        }
+      }
+
+      setCustomerEmails(emails);
     };
 
     fetchOrders();
@@ -56,13 +94,13 @@ const Admin = () => {
 
     let apiUrl = "";
     switch (status) {
-      case "confirmed":
+      case "CONFIRMED":
         apiUrl = `http://localhost:5003/api/admin-order/update-order/${orderId}/confirmed`;
         break;
-      case "completed":
+      case "COMPLETE":
         apiUrl = `http://localhost:5003/api/admin-order/update-order/${orderId}/completed`;
         break;
-      case "cancelled":
+      case "CANCELLED":
         apiUrl = `http://localhost:5003/api/admin-order/update-order/${orderId}/cancelled`;
         break;
       default:
@@ -97,7 +135,7 @@ const Admin = () => {
   };
 
   const handleOrderClick = (orderId) => {
-    navigate(`/order-details/${orderId}`);
+    navigate(`/admin/order-details/${orderId}`);
   };
 
   return (
@@ -107,6 +145,7 @@ const Admin = () => {
         <thead>
           <tr>
             <th>Order ID</th>
+            <th>Email</th>
             <th>Total Price</th>
             <th>Status</th>
             <th>Created At</th>
@@ -124,6 +163,7 @@ const Admin = () => {
                   {order.id}
                 </button>
               </td>
+              <td>{customerEmails[order.customerId] || "Loading..."}</td>
               <td>{formatter(order.totalPrice)}</td>
               <td>{order.status}</td>
               <td>
@@ -134,19 +174,19 @@ const Admin = () => {
                   order.status !== "CANCELLED" && (
                     <>
                       <button
-                        onClick={() => updateOrderStatus(order.id, "confirmed")}
+                        onClick={() => updateOrderStatus(order.id, "CONFIRMED")}
                         disabled={order.status !== "PENDING"}
                       >
                         Confirm
                       </button>
                       <button
-                        onClick={() => updateOrderStatus(order.id, "completed")}
+                        onClick={() => updateOrderStatus(order.id, "COMPLETE")}
                         disabled={order.status === "CANCELLED"}
                       >
                         Complete
                       </button>
                       <button
-                        onClick={() => updateOrderStatus(order.id, "cancelled")}
+                        onClick={() => updateOrderStatus(order.id, "CANCELLED")}
                         disabled={
                           order.status === "COMPLETE" ||
                           order.status === "CONFIRMED"

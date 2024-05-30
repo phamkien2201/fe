@@ -20,14 +20,14 @@ const Login = () => {
 
   const validate = () => {
     let result = true;
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (email === "" || email === null) {
       result = false;
       toast.warning("Nhập Email");
-      // } else if (email !== "admin" && !emailRegex.test(email)) {
-      //   result = false;
-      //   toast.warning("Email không hợp lệ");
+    } else if (email !== "admin@gmail.com" && !emailRegex.test(email)) {
+      result = false;
+      toast.warning("Email không hợp lệ");
     }
 
     if (password === "" || password === null) {
@@ -60,11 +60,12 @@ const Login = () => {
             sessionStorage.setItem("accessToken", resp.data.accessToken);
             sessionStorage.setItem("refreshToken", resp.data.refreshToken);
 
-            if (email === "admin") {
+            if (email === "admin@gmail.com") {
               navigate("/admin");
             } else {
               navigate("/cart");
             }
+            window.location.reload();
           }
         })
         .catch((err) => {

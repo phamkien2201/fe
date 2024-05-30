@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,7 +9,9 @@ import "./style.scss";
 import { BsPlusLg, BsDash } from "react-icons/bs";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { formatter } from "../../../utils/formater";
-import { useCart } from "../Cart/CartContainer/CartContext";
+import getCustomerID from "../custumer/APIcustumerIP";
+import axios from "axios";
+
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
@@ -71,12 +73,56 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
-  const { addToCart } = useCart();
   const [shortDescription, setShortDescription] = useState("");
 
-  const handleAdd = (product) => {
-    addToCart(product);
+  const handleAdd = async (product) => {
+    const token = sessionStorage.getItem("accessToken");
+    const customerId = await getCustomerID();
+
+    console.log("token", token);
+    fetch(
+      `http://localhost:5003/api/cart/get-cart-by-customerid/${customerId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then(async (data) => {
+        if (data && data.data) {
+          console.log("cart id", data.data.id);
+          try {
+            const response = await axios.post(
+              `http://localhost:5003/api/cart/add-item-to-cart/${data.data.id}`,
+              {
+                quantity: quantity,
+                price: product.price.giaTienHienTai,
+                productId: productId,
+              },
+              {
+                headers: {
+                  Accept: "*/*",
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            console.log("Response:", response.data);
+            toast.success("Thêm giỏ hàng thành công");
+            setQuantity(1);
+          } catch (error) {
+            console.error("Error saving user data to server:", error);
+            throw error;
+          }
+        } else {
+          throw new Error("Error by API");
+        }
+      })
+      .catch((err) => console.error("Error fetching data: ", err));
   };
+
   function truncateToSentences(text, maxSentences) {
     const sentences = text.split(".");
     if (sentences.length <= maxSentences) {
@@ -114,15 +160,21 @@ function ProductDetails() {
   }
 
   if (!product) return <div>Loading...</div>;
+
+  // các phần khác của code giống như trước
+  // State để kiểm soát hiển thị mở rộng
+
+  // Hàm để toggle trạng thái mở rộng
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  // Style cho phần mô tả sản phẩm
   const descriptionStyle = {
-    maxHeight: isExpanded ? "none" : "500px",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: isExpanded ? "normal" : "nowrap",
+    maxHeight: isExpanded ? "none" : "500px", // Giới hạn chiều cao khi chưa mở rộng
+    overflow: "hidden", // Ẩn nội dung thừa
+    textOverflow: "ellipsis", // Thêm ba chấm nếu nội dung bị cắt ngắn
+    whiteSpace: isExpanded ? "normal" : "nowrap", // Đảm bảo không xuống dòng khi chưa mở rộng
     transition: "max-height 0.3s ease-in-out",
   };
 

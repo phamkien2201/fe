@@ -13,8 +13,8 @@ import Cart from "./pages/users/Cart/Cart";
 import Login from "./pages/users/login/login";
 import Register from "./pages/users/login/Register";
 import TabMenu from "./pages/users/custumer/TabMenu";
-import Admin from "./pages/admin/index";
-import OrderDetails from "./pages/admin/OrderDetails";
+import SuccessOrder from "./pages/users/Cart/CartContainer/SuccessOrder";
+
 const renderUserRouter = () => {
   const userRouters = [
     {
@@ -62,13 +62,10 @@ const renderUserRouter = () => {
       path: "/Custumer",
       element: <TabMenu />,
     },
+
     {
-      path: "/admin",
-      element: <Admin />,
-    },
-    {
-      path: "/order-details/:orderId",
-      element: <OrderDetails />,
+      path: "/order-success",
+      element: <SuccessOrder />,
     },
   ];
 

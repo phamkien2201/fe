@@ -1,14 +1,15 @@
 import React from "react";
 import { formatter } from "../../../../utils/formater";
-import { useCart } from "./CartContext";
+import axios from "axios";
+import getCustomerID from "../../custumer/APIcustumerIP";
+import { useNavigate } from "react-router-dom";
 
 const Summary = ({ cartItems }) => {
-  const { checkout } = useCart();
-  const customerId = sessionStorage.getItem("customerId");
+  const navigate = useNavigate();
 
   //total summary for cart summary
   const totalAmount = cartItems.reduce((acc, item) => {
-    return acc + item.price.giaTienHienTai * item.quantity;
+    return acc + item.price * item.quantity;
   }, 0);
 
   //add 2% tax on the totalAmount
@@ -22,11 +23,33 @@ const Summary = ({ cartItems }) => {
   //overal price
   const totalAmountWithTax = totalAmount + taxAmount;
 
-  const handleCheckout = () => {
-    if (customerId) {
-      checkout(customerId);
-    } else {
-      console.error("Customer ID not found in sessionStorage");
+  const handleOrder = async () => {
+    const confirmOrder = window.confirm("Bạn có chắc chắn muốn đặt hàng?");
+    if (confirmOrder) {
+      const customerId = await getCustomerID();
+      const token = sessionStorage.getItem("accessToken");
+
+      const orderData = cartItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      }));
+
+      try {
+        await axios.post(
+          `http://localhost:5003/api/order/create-order/${customerId}`,
+          orderData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        navigate("/order-success");
+      } catch (error) {
+        console.error("Error creating order: ", error);
+      }
     }
   };
 
@@ -45,7 +68,7 @@ const Summary = ({ cartItems }) => {
         <span>Tạm tính</span>
         {formatter(totalAmountWithTax)}
       </div>
-      <button className="check-out-btn" onClick={handleCheckout}>
+      <button className="check-out-btn" onClick={handleOrder}>
         Đặt hàng
       </button>
     </div>

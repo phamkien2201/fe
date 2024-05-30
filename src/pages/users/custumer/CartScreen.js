@@ -13,13 +13,10 @@ const CartScreen = () => {
 
   const fetchProducts = async (status) => {
     try {
-      const customerId = sessionStorage.getItem("customerId"); // Lấy customerId từ sessionStorage
-      let apiUrl = `http://localhost:5003/api/order/don-hang-cua-toi/${customerId}`; // Sử dụng customerId trong URL
-      if (status !== "all") {
-        apiUrl += `?status=${status}`;
-      }
+      const customerId = sessionStorage.getItem("customerId");
+      let apiUrl = `http://localhost:5003/api/order/don-hang-cua-toi/${customerId}`;
       const response = await axios.get(apiUrl);
-      setProducts(response.data);
+      setProducts(response.data.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -35,34 +32,28 @@ const CartScreen = () => {
           Tất cả
         </button>
         <button
-          onClick={() => setSelectedStatus("onprocess")}
-          className={selectedStatus === "onprocess" ? "active" : ""}
+          onClick={() => setSelectedStatus("PENDING")}
+          className={selectedStatus === "PENDING" ? "active" : ""}
         >
           Đang xử lý
         </button>
         <button
-          onClick={() => setSelectedStatus("delivering")}
-          className={selectedStatus === "delivering" ? "active" : ""}
+          onClick={() => setSelectedStatus("CONFIRMED")}
+          className={selectedStatus === "CONFIRMED" ? "active" : ""}
         >
           Đang giao
         </button>
         <button
-          onClick={() => setSelectedStatus("delivered")}
-          className={selectedStatus === "delivered" ? "active" : ""}
+          onClick={() => setSelectedStatus("COMPLETE")}
+          className={selectedStatus === "COMPLETE" ? "active" : ""}
         >
           Đã giao
         </button>
         <button
-          onClick={() => setSelectedStatus("cancel")}
-          className={selectedStatus === "cancel" ? "active" : ""}
+          onClick={() => setSelectedStatus("CANCELLED")}
+          className={selectedStatus === "CANCELLED" ? "active" : ""}
         >
           Đã hủy
-        </button>
-        <button
-          onClick={() => setSelectedStatus("return")}
-          className={selectedStatus === "return" ? "active" : ""}
-        >
-          Trả hàng
         </button>
       </div>
       <div className="product-container">
@@ -70,17 +61,7 @@ const CartScreen = () => {
           <p>Bạn chưa có đơn hàng nào</p>
         ) : (
           products.map((product) => (
-            <ProductCard
-              key={product.id}
-              p={{
-                id: product.id,
-                timeCreated: product.timeCreated,
-                imageUrl: product.imageUrl,
-                name: product.name,
-                price: product.price,
-                status: product.status,
-              }}
-            />
+            <div key={product.id}>{product.id}</div> // Hiển thị ID của đơn hàng
           ))
         )}
       </div>

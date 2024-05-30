@@ -3,7 +3,7 @@ import "./style.scss";
 import { BsCartFill, BsChevronDown, BsPersonCircle } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import SearchComponent from "../../../../component/SearchComponent";
-import { useCart } from "../../Cart/CartContainer/CartContext";
+import getCustomerID from "../../custumer/APIcustumerIP";
 
 const Header = ({ userData, setUserData }) => {
   const [menus, setMenus] = useState([]);
@@ -11,8 +11,64 @@ const Header = ({ userData, setUserData }) => {
   const [activeSubMenuId, setActiveSubMenuId] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { cartItems } = useCart();
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    handleFetchCart();
+  }, []);
+
+  const handleFetchCart = async () => {
+    const token = sessionStorage.getItem("accessToken");
+    const email = sessionStorage.getItem("email");
+
+    if (!token) {
+      console.error("Access token not found!");
+      return;
+    }
+
+    if (email === "admin@gmail.com") {
+      console.log("Admin email detected, skipping cart fetch.");
+      return;
+    }
+
+    const customerId = await getCustomerID();
+
+    fetch(
+      `http://localhost:5003/api/cart/get-cart-by-customerid/${customerId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.data) {
+          fetch(
+            `http://localhost:5003/api/cart/get-cart-item/${data.data.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              if (data && data.data) {
+                setCartItems(data.data);
+              } else {
+                throw new Error("Error by API");
+              }
+            })
+            .catch((err) => console.error("Error fetching data: ", err));
+        } else {
+          throw new Error("Error by API");
+        }
+      })
+      .catch((err) => console.error("Error fetching data: ", err));
+  };
+
   useEffect(() => {
     const loggedInEmail = sessionStorage.getItem("email");
     if (loggedInEmail) {
