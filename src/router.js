@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./pages/users/homePage";
 import { ROUTERS } from "./utils/router";
 import MasterLayout from "./pages/users/theme/masterLayout";
@@ -48,7 +48,11 @@ const renderUserRouter = () => {
     },
     {
       path: "/cart",
-      element: <Cart />,
+      element: sessionStorage.getItem("email") ? (
+        <Cart />
+      ) : (
+        <Navigate to="/login" state={{ from: "/cart" }} />
+      ),
     },
     {
       path: "/Login",

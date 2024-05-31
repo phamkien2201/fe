@@ -78,6 +78,10 @@ function ProductDetails() {
   const handleAdd = async (product) => {
     const token = sessionStorage.getItem("accessToken");
     const customerId = await getCustomerID();
+    if (!token) {
+      toast.error("Vui lòng đăng nhập trước khi thêm vào giỏ hàng.");
+      return;
+    }
 
     console.log("token", token);
     fetch(

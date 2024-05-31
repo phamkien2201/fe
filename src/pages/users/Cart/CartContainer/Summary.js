@@ -7,27 +7,12 @@ import { useNavigate } from "react-router-dom";
 const Summary = ({ cartItems }) => {
   const navigate = useNavigate();
 
-  //total summary for cart summary
-  const totalAmount = cartItems.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
-  }, 0);
-
-  //add 2% tax on the totalAmount
-  const taxAmount = totalAmount * 0.02;
-
-  //total quantity in the cart
-  const totalQuantity = cartItems.reduce((acc, item) => {
-    return acc + item.quantity;
-  }, 0);
-
-  //overal price
-  const totalAmountWithTax = totalAmount + taxAmount;
-
   const handleOrder = async () => {
     const confirmOrder = window.confirm("Bạn có chắc chắn muốn đặt hàng?");
     if (confirmOrder) {
-      const customerId = await getCustomerID();
       const token = sessionStorage.getItem("accessToken");
+
+      const customerId = await getCustomerID();
 
       const orderData = cartItems.map((item) => ({
         productId: item.productId,
@@ -46,12 +31,48 @@ const Summary = ({ cartItems }) => {
             },
           }
         );
+
+        // Xóa từng sản phẩm trong giỏ hàng sau khi đặt hàng thành công
+        await Promise.all(
+          cartItems.map(async (item) => {
+            try {
+              await axios.delete(
+                `http://localhost:5003/api/cart/delete-item/${item.id}`,
+                {
+                  headers: {
+                    Accept: "*/*",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+            } catch (error) {
+              console.error("Lỗi khi xóa sản phẩm từ giỏ hàng: ", error);
+            }
+          })
+        );
+
         navigate("/order-success");
       } catch (error) {
-        console.error("Error creating order: ", error);
+        console.error("Lỗi khi tạo đơn hàng: ", error);
       }
     }
   };
+
+  // Tính tổng tiền
+  const totalAmount = cartItems.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  // Tính thuế
+  const taxAmount = totalAmount * 0.02;
+
+  // Tổng số lượng sản phẩm
+  const totalQuantity = cartItems.reduce((acc, item) => {
+    return acc + item.quantity;
+  }, 0);
+
+  // Tổng tiền với thuế
+  const totalAmountWithTax = totalAmount + taxAmount;
 
   return (
     <div className="cart-summary">

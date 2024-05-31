@@ -9,20 +9,59 @@ import { formatter } from "../../utils/formater";
 const Admin = () => {
   const [orders, setOrders] = useState([]);
   const [customerEmails, setCustomerEmails] = useState({});
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const accessToken = sessionStorage.getItem("accessToken");
+    fetchOrders();
+  }, [pageIndex, pageSize]);
 
-      if (!accessToken) {
-        toast.error("Access token is missing. Please log in again.");
-        return;
+  const fetchOrders = async () => {
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      toast.error("Thiếu mã truy cập. Vui lòng đăng nhập lại.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5003/api/admin-order/get-all-order?PageIndex=${pageIndex}&PageSize=${pageSize}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.succeeded) {
+        setOrders(data.data);
+        setTotalPages(Math.ceil(data.totalCount / pageSize));
+        fetchCustomerEmails(data.data);
+      } else {
+        toast.error("Không thể lấy danh sách đơn hàng");
       }
+    } catch (error) {
+      toast.error("Lỗi: " + error.message);
+    }
+  };
+
+  const fetchCustomerEmails = async (orders) => {
+    const emails = {};
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    for (const order of orders) {
+      if (!order.customerId) continue;
 
       try {
         const response = await fetch(
-          "http://localhost:5003/api/admin-order/get-all-order",
+          `http://localhost:5002/api/customer/customerId?customerId=${order.customerId}`,
           {
             method: "GET",
             headers: {
@@ -35,60 +74,25 @@ const Admin = () => {
         const data = await response.json();
 
         if (data.succeeded) {
-          setOrders(data.data);
-          fetchCustomerEmails(data.data);
+          emails[order.customerId] = data.data.email;
         } else {
-          toast.error("Failed to fetch orders");
+          toast.error(
+            `Không thể lấy email cho khách hàng ID: ${order.customerId}`
+          );
         }
       } catch (error) {
-        toast.error("Error: " + error.message);
+        toast.error("Lỗi: " + error.message);
       }
-    };
+    }
 
-    const fetchCustomerEmails = async (orders) => {
-      const emails = {};
-      const accessToken = sessionStorage.getItem("accessToken");
-
-      for (const order of orders) {
-        if (!order.customerId) continue;
-
-        try {
-          const response = await fetch(
-            `http://localhost:5002/api/customer/customerId?customerId=${order.customerId}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
-
-          const data = await response.json();
-
-          if (data.succeeded) {
-            emails[order.customerId] = data.data.email;
-          } else {
-            toast.error(
-              `Failed to fetch email for customer ID: ${order.customerId}`
-            );
-          }
-        } catch (error) {
-          toast.error("Error: " + error.message);
-        }
-      }
-
-      setCustomerEmails(emails);
-    };
-
-    fetchOrders();
-  }, []);
+    setCustomerEmails(emails);
+  };
 
   const updateOrderStatus = async (orderId, status) => {
     const accessToken = sessionStorage.getItem("accessToken");
 
     if (!accessToken) {
-      toast.error("Access token is missing. Please log in again.");
+      toast.error("Thiếu mã truy cập. Vui lòng đăng nhập lại.");
       return;
     }
 
@@ -104,7 +108,7 @@ const Admin = () => {
         apiUrl = `http://localhost:5003/api/admin-order/update-order/${orderId}/cancelled`;
         break;
       default:
-        toast.error("Invalid status");
+        toast.error("Trạng thái không hợp lệ");
         return;
     }
 
@@ -120,17 +124,17 @@ const Admin = () => {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success(`Order ${status} successfully`);
+        toast.success(`Cập nhật trạng thái đơn hàng thành công: ${status}`);
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
             order.id === orderId ? { ...order, status } : order
           )
         );
       } else {
-        toast.error(data.message || `Failed to update order to ${status}`);
+        toast.error(data.message || `Cập nhật đơn hàng thất bại: ${status}`);
       }
     } catch (error) {
-      toast.error("Error: " + error.message);
+      toast.error("Lỗi: " + error.message);
     }
   };
 
@@ -138,18 +142,34 @@ const Admin = () => {
     navigate(`/admin/order-details/${orderId}`);
   };
 
+  const handlePageChange = (pageIndex) => {
+    setPageIndex(pageIndex);
+  };
+
   return (
     <div className="admin-container">
-      <h2>Admin Orders</h2>
+      <h2>Đơn hàng Quản trị</h2>
+      <div className="pagination-input">
+        <input
+          type="number"
+          value={pageIndex}
+          onChange={(e) => setPageIndex(parseInt(e.target.value))}
+        />
+        <input
+          type="number"
+          value={pageSize}
+          onChange={(e) => setPageSize(parseInt(e.target.value))}
+        />
+      </div>
       <table className="orders-table">
         <thead>
           <tr>
-            <th>Order ID</th>
+            <th>ID Đơn hàng</th>
             <th>Email</th>
-            <th>Total Price</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th>Actions</th>
+            <th>Tổng giá</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -163,7 +183,7 @@ const Admin = () => {
                   {order.id}
                 </button>
               </td>
-              <td>{customerEmails[order.customerId] || "Loading..."}</td>
+              <td>{customerEmails[order.customerId] || "Đang tải..."}</td>
               <td>{formatter(order.totalPrice)}</td>
               <td>{order.status}</td>
               <td>
@@ -177,13 +197,13 @@ const Admin = () => {
                         onClick={() => updateOrderStatus(order.id, "CONFIRMED")}
                         disabled={order.status !== "PENDING"}
                       >
-                        Confirm
+                        Xác nhận
                       </button>
                       <button
                         onClick={() => updateOrderStatus(order.id, "COMPLETE")}
                         disabled={order.status === "CANCELLED"}
                       >
-                        Complete
+                        Hoàn thành
                       </button>
                       <button
                         onClick={() => updateOrderStatus(order.id, "CANCELLED")}
@@ -192,7 +212,7 @@ const Admin = () => {
                           order.status === "CONFIRMED"
                         }
                       >
-                        Cancel
+                        Hủy
                       </button>
                     </>
                   )}
@@ -201,6 +221,30 @@ const Admin = () => {
           ))}
         </tbody>
       </table>
+      <div className="pagination-order">
+        {totalPages > 1 && (
+          <button
+            onClick={() => handlePageChange(1)}
+            disabled={pageIndex === 1}
+          >
+            1
+          </button>
+        )}
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => {
+              if (pageIndex !== index + 1) {
+                handlePageChange(index + 1);
+              }
+            }}
+            className={pageIndex === index + 1 ? "active" : ""}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+
       <ToastContainer />
     </div>
   );

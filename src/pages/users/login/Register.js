@@ -41,30 +41,35 @@ const Register = () => {
     return true;
   };
 
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
     let regobj = { email, password };
     if (IsValidate()) {
-      fetch("http://localhost:5004/api/auth/register", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(regobj),
-      })
-        .then((res) => {
-          if (res.status === 409) {
-            // Kiểm tra nếu tài khoản đã tồn tại
-            throw new Error("Tài khoản đã tồn tại."); // Ném lỗi để bắt trong catch
-          }
-          if (!res.ok) {
-            // Kiểm tra nếu có lỗi không xác định
-            throw new Error("Có lỗi xảy ra khi đăng ký."); // Ném lỗi để bắt trong catch
-          }
-          toast.success("Đăng ký thành công.");
-          navigate("/login");
-        })
-        .catch((err) => {
-          toast.error("Failed: " + err.message);
+      try {
+        const res = await fetch("http://localhost:5004/api/auth/register", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(regobj),
         });
+        const responseText = await res.text(); // Lấy nội dung phản hồi dưới dạng văn bản
+        if (
+          res.status === 409 ||
+          responseText.includes("Violation of UNIQUE KEY constraint")
+        ) {
+          // Kiểm tra nếu tài khoản đã tồn tại
+          throw new Error("Tài khoản đã tồn tại.");
+        }
+
+        if (!res.ok) {
+          // Kiểm tra nếu có lỗi không xác định
+          throw new Error("Có lỗi xảy ra khi đăng ký.");
+        }
+
+        toast.success("Đăng ký thành công.");
+        navigate("/login");
+      } catch (err) {
+        toast.error("Failed: " + err.message);
+      }
     } else {
       toast.error("Email và mật khẩu không hợp lệ!");
     }

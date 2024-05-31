@@ -1,14 +1,16 @@
 /* CSS for horizontal tab menu */
 .horizonal-tab-menu {
-  flex-grow: 1;
   display: flex;
-  overflow-x: auto;
-  /* Enable horizontal scrolling */
-  white-space: nowrap;
-  /* Prevent button wrapping */
-  margin-bottom: 10px;
+  justify-content: space-between;
+  position:absolute;
+  margin: -20px;
   width: 100%;
-  /* Set width to 100% */
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .horizonal-tab-menu button {
@@ -21,7 +23,7 @@
   padding: 10px 20px;
   transition: background-color 0.3s;
   position: relative;
-  /* Set position to relative */
+  text-align: center;
 }
 
 .horizonal-tab-menu button.active {
@@ -35,15 +37,65 @@
   left: 0;
   width: 100%;
   height: 3px;
-  /* Adjust thickness of underline */
   background-color: #007bff;
-  /* Adjust color of underline */
 }
 
-/* CSS for product container */
-.product-container {
+.cart {
+  padding: 80px 20px 20px; 
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.product-order-container {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 60px;
+}
+
+.product-order {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  max-height: 150px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.product-order img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.product-order-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 150px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.product-order-name {
+  max-height: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.product-order-details {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #555;
+  flex-direction: column;
+}
+
+.product-order-price {
+  color: #e74c3c;
 }
